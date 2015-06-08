@@ -3,7 +3,7 @@
 Plugin Name: Stock Quote
 Plugin URI: http://urosevic.net/wordpress/plugins/stock-quote/
 Description: Quick and easy insert static inline stock information for specific exchange symbol by customizable shortcode.
-Version: 0.1.0
+Version: 0.1.1
 Author: Aleksandar Urosevic
 Author URI: http://urosevic.net
 License: GNU GPL3
@@ -78,7 +78,7 @@ if(!class_exists('WPAU_STOCK_QUOTE'))
          * Construct the plugin object
          */
         public function __construct() {
-            define('WPAU_STOCK_QUOTE_VER','0.1.0');
+            define('WPAU_STOCK_QUOTE_VER','0.1.1');
 
             // Initialize Settings
             require_once(sprintf("%s/inc/settings.php", dirname(__FILE__)));
@@ -332,14 +332,14 @@ if(class_exists('WPAU_STOCK_QUOTE'))
     if(isset($wpau_stock_quote))
     {
         // Add the settings link to the plugins page
-        function plugin_settings_link($links) {
+        function wpau_stock_quote_plugin_settings_link($links) {
             $settings_link = '<a href="options-general.php?page=wpau_stock_quote">Settings</a>';
             array_unshift($links, $settings_link);
             return $links;
-        } // eof plugin_settings_link()
+        } // eof wpau_stock_quote_plugin_settings_link()
 
         $plugin = plugin_basename(__FILE__);
-        add_filter("plugin_action_links_$plugin", 'plugin_settings_link');
+        add_filter("plugin_action_links_$plugin", 'wpau_stock_quote_plugin_settings_link');
 
         /**
          * Enqueue the colour picker
