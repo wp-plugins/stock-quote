@@ -127,7 +127,7 @@ if(!class_exists('WPAU_STOCK_QUOTE_SETTINGS'))
             add_settings_field(
                 'wpau_stock_quote-cache_timeout',
                 __('Cache Timeout','wpausq'),
-                array(&$this, 'settings_field_input_text'),
+                array(&$this, 'settings_field_input_number'),
                 'wpau_stock_quote',
                 'wpausq_advanced_settings',
                 array(
@@ -135,6 +135,26 @@ if(!class_exists('WPAU_STOCK_QUOTE_SETTINGS'))
                     'description' => __('Define cache timeout for single quote set, in seconds','wpausq'),
                     'class'       => 'num',
                     'value'       => $defaults['cache_timeout'],
+                    'min'         => 0,
+                    'max'         => DAY_IN_SECONDS,
+                    'step'        => 1
+                )
+            );
+            // fetching timeout field
+            add_settings_field(
+                'wpau_stock_quote-timeout',
+                __('Fetch Timeout','wpausq'),
+                array(&$this, 'settings_field_input_number'),
+                'wpau_stock_quote',
+                'wpausq_advanced_settings',
+                array(
+                    'field'       => "stock_quote_defaults[timeout]",
+                    'description' => __('Define timeout to fetch quote feed before give up and display error message, in seconds (default is 2)','wpausq'),
+                    'class'       => 'num',
+                    'value'       => $defaults['timeout'],
+                    'min'         => 1,
+                    'max'         => 60,
+                    'step'        => 1
                 )
             );
             // default error message
@@ -189,6 +209,25 @@ if(!class_exists('WPAU_STOCK_QUOTE_SETTINGS'))
             extract( $args );
             echo sprintf('<input type="text" name="%s" id="%s" value="%s" class="%s" /><p class="description">%s</p>', $field, $field, $value, $class, $description);
         } // END public function settings_field_input_text($args)
+
+        /**
+         * This function provides number inputs for settings fields
+         */
+        public function settings_field_input_number($args)
+        {
+            extract( $args );
+            printf(
+                '<input type="number" name="%1$s" id="%2$s" value="%3$s" class="%4$s" min="%5$s" max="%6$s" step="%7$s" /><p class="description">%8$s</p>',
+                $field, // name
+                $field, // id
+                $value, // value
+                $class, // class
+                $min, // min
+                $max, // max
+                $step, // step
+                $description // description
+            );
+        } // END public function settings_field_input_number($args)
 
         /**
          * This function provides checkbox for settings fields

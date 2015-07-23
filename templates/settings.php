@@ -27,6 +27,7 @@
         </ul>
     </p>
 
+    <p>If you experience error message after update (WordPress or plugin), try to increase <strong>Fetch Timeout</strong> parameter in settings (from default 2 to 3 seconds), and then append to page URL parameter <em>?stockquote_purge_cache=1</em> to re-fetch quote feed.</p>
     <h2><?php _e( 'Disclaimer', 'wpausq' ); ?></h2>
     <p class="description">Data for Stock Quote has provided by Google Finance and per their disclaimer,
 it can only be used at a noncommercial level. Please also note that Google has stated

@@ -3,7 +3,7 @@
 Plugin Name: Stock Quote
 Plugin URI: http://urosevic.net/wordpress/plugins/stock-quote/
 Description: Quick and easy insert static inline stock information for specific exchange symbol by customizable shortcode.
-Version: 0.1.1
+Version: 0.1.2
 Author: Aleksandar Urosevic
 Author URI: http://urosevic.net
 License: GNU GPL3
@@ -78,7 +78,7 @@ if(!class_exists('WPAU_STOCK_QUOTE'))
          * Construct the plugin object
          */
         public function __construct() {
-            define('WPAU_STOCK_QUOTE_VER','0.1.1');
+            define('WPAU_STOCK_QUOTE_VER','0.1.2');
 
             // Initialize Settings
             require_once(sprintf("%s/inc/settings.php", dirname(__FILE__)));
@@ -99,7 +99,8 @@ if(!class_exists('WPAU_STOCK_QUOTE'))
                 'cache_timeout' => '180', // 3 minutes
                 'error_message' => 'Unfortunately, we could not get stock quote %symbol% this time.',
                 'legend'        => "AAPL;Apple Inc.\nFB;Facebook, Inc.\nCSCO;Cisco Systems, Inc.\nGOOG;Google Inc.\nINTC;Intel Corporation\nLNKD;LinkedIn Corporation\nMSFT;Microsoft Corporation\nTWTR;Twitter, Inc.\nBABA;Alibaba Group Holding Limited\nIBM;International Business Machines Corporation\n.DJI;Dow Jones Industrial Average\nEURGBP;Euro (€) ⇨ British Pound Sterling (£)",
-                'style'         => ''
+                'style'         => '',
+                'timeout'       => 2
             );
             $options = wp_parse_args(get_option('stock_quote_defaults'), $defaults);
             return $options;
@@ -124,11 +125,11 @@ if(!class_exists('WPAU_STOCK_QUOTE'))
          */
         public static function stock_quote($symbol = 'AAPL', $show = 'symbol', $zero, $minus, $plus, $nolink = false, $class = '') {
 
-            if ( !empty($symbol) )
+            if ( ! empty($symbol) )
             {
 
                 // get fresh or from transient cache stock quote
-                $sq_transient_id = "stock_quote_json_".md5($symbol);
+                $sq_transient_id = "stock_quote_json_" . md5($symbol);
 
                 // get legend for company names
                 $defaults = self::defaults();
@@ -142,7 +143,7 @@ if(!class_exists('WPAU_STOCK_QUOTE'))
                 unset($m, $msize, $matrix, $line);
 
                 // check if cache exists
-                if ( false === ( $json = get_transient( $sq_transient_id ) ) || empty($json) )
+                if ( false === ( $json = get_transient( $sq_transient_id ) ) || empty($json) || ! empty($_GET['stockquote_purge_cache']) )
                 {
                     // if does not exist, get new cache
 
@@ -159,7 +160,7 @@ if(!class_exists('WPAU_STOCK_QUOTE'))
 
                     // set timeout
                     $wprga = array(
-                        'timeout' => 2 // two seconds only
+                        'timeout' => $defaults['timeout'] // two seconds only
                     );
                     // get stock from Google
                     $response = wp_remote_get($exc_url, $wprga);
