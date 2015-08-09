@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: widget, stock, securities, quote, financial, finance, exchange, bank, market, trading, investment, stock symbols, stock quotes, forex, nasdaq, nyse, wall street
 Requires at least: 3.9.0
 Tested up to: 4.3
-Stable tag: 0.1.2
+Stable tag: 0.1.3
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -89,6 +89,10 @@ Add this to your template file (you also can add custom parameters for shortcode
 
 `<?php echo do_shortcode('[stock_ticker]'); ?>`
 
+= I set to show company name but symbol is displayed instead =
+
+Please note that Google Finance does not provide company name in retrieved feeds. You'll need to set company name to Custom Names field on plugin settings page.
+
 == Disclaimer ==
 
 Data for Stock Quote has provided by Google Finance and per their disclaimer, it can only be used at a noncommercial level. Please also note that Google has stated Finance API as deprecated and has no exact shutdown date.
@@ -136,6 +140,12 @@ Bugfix release
 This is initial version of plugin.
 
 == Changelog ==
+
+= 0.1.3 (20150809) =
+* Change: Item ID length reduced fro 8 to 4 characters
+* Change: Move all core methods inside class
+* Make code fully compliant to WordPress Coding Standard
+* Update FAQ
 
 = 0.1.2 (20150723) =
 * Add: Option to purge cache by providing parameter `stockquote_purge_cache` in page URL
