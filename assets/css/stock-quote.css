@@ -1,0 +1,1 @@
+.widget .stock_quote{margin:0;padding:0}.stock_quote.sqitem.error{font-weight:bold}.stock_quote.sqitem:before{content:""}.stock_quote.plus.sqitem:before{content:url(../img/up_g.gif);margin-right:2px}.stock_quote.minus.sqitem:before{content:url(../img/down_r.gif);margin-right:2px}
