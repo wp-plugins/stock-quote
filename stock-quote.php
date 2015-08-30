@@ -3,7 +3,7 @@
 Plugin Name: Stock Quote
 Plugin URI: http://urosevic.net/wordpress/plugins/stock-quote/
 Description: Quick and easy insert static inline stock information for specific exchange symbol by customizable shortcode.
-Version: 0.1.3
+Version: 0.1.4
 Author: Aleksandar Urosevic
 Author URI: http://urosevic.net
 License: GNU GPL3
@@ -68,7 +68,7 @@ data licensors endorses or is responsible for the content of any advertisement
 or any goods or services offered therein.
  */
 
-define( 'WPAU_STOCK_QUOTE_VER', '0.1.3' );
+define( 'WPAU_STOCK_QUOTE_VER', '0.1.4' );
 
 if ( ! class_exists( 'WPAU_STOCK_QUOTE' ) ) {
 
@@ -294,12 +294,17 @@ if ( ! class_exists( 'WPAU_STOCK_QUOTE' ) ) {
 
 			if ( ! empty( $symbol ) ) {
 
-				// Get fresh or from transient cache stock quote.
-				$sq_transient_id = 'stock_quote_json_' . md5( $symbol );
-
-				// Get legend for company names.
+				// Get defaults.
 				$defaults = self::$defaults;
 
+				if ( ! defined( 'WPAU_STOCK_QUOTE_CACHE_TIMEOUT' ) ) {
+					define( 'WPAU_STOCK_QUOTE_CACHE_TIMEOUT', $defaults['cache_timeout'] );
+				}
+
+				// Get fresh or from transient cache stock quote.
+				$sq_transient_id = 'stock_quote_json_' . sanitize_key( $symbol ) . '_' . WPAU_STOCK_QUOTE_CACHE_TIMEOUT;
+
+				// Get legend for company names.
 				$matrix = explode( "\n", $defaults['legend'] );
 				$msize = count( $matrix );
 				for ( $m = 0; $m < $msize; ++$m ) {
@@ -310,6 +315,7 @@ if ( ! class_exists( 'WPAU_STOCK_QUOTE' ) ) {
 
 				// Check if cache exists.
 				if ( false === ( $json = get_transient( $sq_transient_id ) ) || empty( $json ) || ! empty( $_GET['stockquote_purge_cache'] ) ) {
+
 					// If does not exist, get new cache.
 					// Clean and prepare symbol for query.
 					$exc_symbol = preg_replace( '/\s+/', '', $symbol );
@@ -339,10 +345,8 @@ if ( ! class_exists( 'WPAU_STOCK_QUOTE' ) ) {
 
 					// Decode data to JSON.
 					$json = json_decode( $data );
-					// Now cache array for N minutes.
-					if ( ! defined( 'WPAU_STOCK_QUOTE_CACHE_TIMEOUT' ) ) {
-						define( 'WPAU_STOCK_QUOTE_CACHE_TIMEOUT', $defaults['cache_timeout'] );
-					}
+
+					// Now cache array for N seconds.
 					set_transient( $sq_transient_id, $json, WPAU_STOCK_QUOTE_CACHE_TIMEOUT );
 
 					// Free some memory: destroy all vars that we temporary used here.
@@ -350,7 +354,7 @@ if ( ! class_exists( 'WPAU_STOCK_QUOTE' ) ) {
 				}
 
 				// Prepare quote.
-				$id = 'stock_quote_'. substr( md5( mt_rand() ), 0,4 );
+				$id = 'stock_quote_' . substr( md5( mt_rand() ), 0, 4 );
 				$class = "stock_quote sqitem $class";
 
 				// Process quote.
@@ -397,10 +401,10 @@ if ( ! class_exists( 'WPAU_STOCK_QUOTE' ) ) {
 					// Do not print change, volume and change% for currencies.
 					if ( 'CURRENCY' == $q_exch ) {
 						$company_show = ( $q_symbol == $q_name ) ? $q_name . '=X' : $q_name;
-						$url_query = $q_symbol;
-						$quote_title = $q_name;
+						$url_query    = $q_symbol;
+						$quote_title  = $q_name;
 					} else {
-						$url_query = $q_exch . ':' . $q_symbol;
+						$url_query   = $q_exch . ':' . $q_symbol;
 						$quote_title = $q_name . ' (' . $q_exch . ' Last trade ' . $q_ltrade . ')';
 					}
 

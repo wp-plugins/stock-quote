@@ -141,6 +141,10 @@ This is initial version of plugin.
 
 == Changelog ==
 
+= 0.1.4 (20150829) =
+* Fix: Quote stuck and never change
+* Change: Made name of transient cache key name human readable
+
 = 0.1.3 (20150809) =
 * Change: Item ID length reduced fro 8 to 4 characters
 * Change: Move all core methods inside class
