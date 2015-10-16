@@ -3,8 +3,8 @@ Contributors: urkekg
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q6Q762MQ97XJ6
 Tags: widget, stock, securities, quote, financial, finance, exchange, bank, market, trading, investment, stock symbols, stock quotes, forex, nasdaq, nyse, wall street
 Requires at least: 3.9.0
-Tested up to: 4.3
-Stable tag: 0.1.3
+Tested up to: 4.3.1
+Stable tag: 0.1.4
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -141,7 +141,7 @@ This is initial version of plugin.
 
 == Changelog ==
 
-= 0.1.4 (20150829) =
+= 0.1.4 (20151016) =
 * Fix: Quote stuck and never change
 * Change: Made name of transient cache key name human readable
 
